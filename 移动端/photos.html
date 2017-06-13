@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin:0;
+			padding: 0;
+		}
+		#container img{
+			width: 25%;
+		}
+	/* 	html,body{
+		width: 100%;
+		height: 100%;
+	} */
+		#big-box{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			background: #000;
+			display: none;
+			background-position: center center;
+			background-size:contain;
+			background-repeat: no-repeat;
+		}
+	</style>
+</head>
+<body>
+	<div id="container">
+	</div>
+	<div id="big-box">
+	</div>
+	<script src='js/jquery.min.js'></script>
+	<script src='js/jquery.mobile-1.4.5.min.js'></script>
+	<script>
+		var html='';
+		var iNow=0;
+		for(var i=0;i<24;i++){
+			html+='<img src="img/thumbs/'+(i+1)+'.jpg"/>'
+		}
+		$('#container').html(html);
+		$('#container img').on('tap',function(e){
+			$('#container').hide();
+			$('#big-box').show().css('background-image','url(img/'+($(this).index()+1)+'.jpg)');
+			e.preventDefault();//阻止点透事件
+			iNow=$(this).index();
+		})
+		$('#big-box').on('tap',function(e){
+			$('#big-box').hide();
+			$('#container').show();
+			e.preventDefault();
+		}).on('swipeleft',function(){
+			iNow++;
+			if(iNow==$('#container img').length){
+				iNow=0;
+			}
+			$('#big-box').show().css('background-image','url(img/'+(iNow+1)+'.jpg)');
+		}).on('swiperight',function(){
+			iNow--;
+			if(iNow==-1){
+				iNow=$('#container img').length-1;
+			}
+			$('#big-box').show().css('background-image','url(img/'+(iNow+1)+'.jpg)');
+		})
+	</script>
+</body>
+</html>
